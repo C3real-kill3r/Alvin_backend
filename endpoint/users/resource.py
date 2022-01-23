@@ -1,5 +1,4 @@
 from flask import request, jsonify
-from itsdangerous import json
 from werkzeug.security import generate_password_hash,check_password_hash
 from app import app, db
 
@@ -7,7 +6,7 @@ import jwt
 import datetime
 import uuid
 
-from endpoint.users.model import User, UserSchema, users_schema
+from endpoint.users.model import User, UserSchema, users_schema, user_schema
 from utils.commons import check_admin, token_required
 
 # register user
@@ -19,7 +18,8 @@ def add_user():
         new_user = User(public_id=str(uuid.uuid4()), name=user['name'], email=user['email'], password=hashed_password, admin=False)
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': 'user created successfully'})
+        user_data = user_schema.dump(new_user)
+        return jsonify({'message': 'user created successfully', 'user': user_data}), 201
     except Exception as e:
         if e.__class__.__name__ == 'IntegrityError':
             return jsonify({'message': 'email already exists'})
@@ -77,7 +77,8 @@ def update_user(current_user, id):
         user.email = request.get_json()['email']
         user.password = generate_password_hash(request.get_json()['password'], method='sha256')
         db.session.commit()
-        return jsonify({'message': 'user updated successfully'})
+        user_data = user_schema.dump(user)
+        return jsonify({'message': 'user updated successfully', 'user': user_data})
     except Exception as e:
         return jsonify({'message': str(e)})
 

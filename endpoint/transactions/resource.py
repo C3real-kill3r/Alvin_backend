@@ -1,5 +1,4 @@
 from flask import request, jsonify
-from itsdangerous import json
 from app import app, db
 
 import datetime
@@ -27,7 +26,9 @@ def add_transaction(current_user):
         new_transaction = Transaction(amount, category, date, description, merchant, current_user.id)
         db.session.add(new_transaction)
         db.session.commit()
-        return jsonify({'message': 'transaction created successfully'})
+        new_transaction.category = new_transaction.category.name
+        transaction_data = transaction_schema.dump(new_transaction)
+        return jsonify({'message': 'transaction created successfully', 'transaction': transaction_data}), 201
     except Exception as e:
         return jsonify({'message': str(e)})
 
@@ -86,7 +87,8 @@ def update_transaction(current_user, id):
             transaction.description = transaction_data['description']
             transaction.merchant = transaction_data['merchant']
             db.session.commit()
-            return jsonify({'message': 'transaction updated successfully'})
+            transaction.category = transaction.category.name
+            return jsonify({'message': 'transaction updated successfully', 'transaction': transaction_schema.dump(transaction)})
         elif transaction.user_id != current_user.id:
             return jsonify({'message': 'unauthorized'})
     except Exception as e:

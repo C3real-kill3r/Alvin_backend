@@ -83,7 +83,13 @@ REQUEST
 RESPONSE
 ```json
 {
-    "message": "user created successfully"
+    "message": "user created successfully",
+    "user": {
+        "admin": false,
+        "email": "test@tets.com",
+        "id": 8,
+        "name": "John Doe"
+    }
 }
 ```
 GET http://127.0.0.1:5000/api/users/1 (get a user)
