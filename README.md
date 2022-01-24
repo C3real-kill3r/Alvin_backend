@@ -3,15 +3,19 @@
 Alvin app allows you automatically tracks your expenses and manages a budget for you based on your savings goals.
 
 Main libraries used:
+
 1. Flask-SQLAlchemy - adds support for SQLAlchemy ORM.
 2. Flask-Marshmellow - object serialization/deserialization library.
 3. Flask-JWT - for user authentication.
 
-
 Project structure:
-```
+
+```text
 .
 ├── README.md
+├── utils
+│   ├── __init__.py
+│   └── commons.py
 ├── endpoints
 │   ├── __init__.py
 │   ├── transactions
@@ -26,53 +30,64 @@ Project structure:
 └── app.py
 ```
 
+* utils - contains general functions that are used throughout the entire package.
 * endpoints - holds all endpoints.
 * app.py - flask application initialization.
 
-## Running 
+## Running
 
-1. Clone repository.
-2. Create and activate a virtual environment by typing:
+* Clone this repository.
 
+```text
+https://github.com/C3real-kill3r/Alvin_backend.git
 ```
+
+* Create and activate a virtual environment by typing:
+
+```text
 virtualenv venv
 ```
 
 * then (for mac OS)
 
-```
+```shell
 source venv/bin/activate
 ```
 
-2. Install requirements by running:
-```
+* Install requirements by running:
+
+```shell
 pip install -r requirements.txt
 ```
 
-3. Run following on your terminal to create the database:
+* Run following on your terminal to create the database:
 
-```
+```text
 python
 ```
 
-```
+```python
 from app import db
 ```
 
-```
+```python
 db.create_all()
 ```
 
-4. Start server by running:
-```
+* Start server by running:
+
+```python
 python app.py
 ```
 
 ## Usage
+
 ### User endpoint
-POST http://127.0.0.1:5000/user (register user)
+
+POST <http://127.0.0.1:5000/user> (register user)
 
 REQUEST
+
 ```json
 {
     "name":"John Doe",
@@ -80,7 +95,9 @@ REQUEST
     "password":"testpassword"
 }
 ```
+
 RESPONSE
+
 ```json
 {
     "message": "user created successfully",
@@ -92,9 +109,11 @@ RESPONSE
     }
 }
 ```
-GET http://127.0.0.1:5000/api/users/1 (get a user)
+
+GET <http://127.0.0.1:5000/api/users/1> (get a user)
 
 RESPONSE
+
 ```json
 {
     "user": {
@@ -108,7 +127,7 @@ RESPONSE
 
 ### Transaction endpoints
 
-POST http://127.0.0.1:5000/transaction (create a transaction)
+POST <http://127.0.0.1:5000/transaction> (create a transaction)
 
 ```json
 {
@@ -120,15 +139,17 @@ POST http://127.0.0.1:5000/transaction (create a transaction)
 ```
 
 RESPONSE
+
 ```json
 {
     "message": "transaction created successfully"
 }
 ```
 
-POST http://127.0.0.1:5000/transaction (get all transactions)
+POST <http://127.0.0.1:5000/transaction> (get all transactions)
 
 RESPONSE
+
 ```json
 [
     {
@@ -143,9 +164,10 @@ RESPONSE
 ]
 ```
 
-GET http://127.0.0.1:5000/transaction/category/food/total/1 (amount per category per month i.e 1 = Jan)
+GET <http://127.0.0.1:5000/transaction/category/food/total/1> (amount per category per month i.e 1 = Jan)
 
 RESPONSE
+
 ```json
 {
     "category": "FOOD",
@@ -153,7 +175,7 @@ RESPONSE
 }
 ```
 
-GET http://127.0.0.1:5000/transaction/category/food/total/period (amount per category per duration)
+GET <http://127.0.0.1:5000/transaction/category/food/total/period> (amount per category per duration)
 
 ```json
 {
@@ -163,6 +185,7 @@ GET http://127.0.0.1:5000/transaction/category/food/total/period (amount per cat
 ```
 
 RESPONCE
+
 ```json
 {
     "category": "FOOD",
@@ -170,9 +193,10 @@ RESPONCE
 }
 ```
 
-GET http://127.0.0.1:5000/transaction/total (total amount spent per category)
+GET <http://127.0.0.1:5000/transaction/total> (total amount spent per category)
 
 RESPONSE
+
 ```json
 [
     {
